@@ -1,0 +1,26 @@
+<workflow-app xmlns="uri:oozie:workflow:0.2" name="hello-world-wf">
+    <start to="java-node"/>
+    <action name="java-node">
+        <java>
+            <!--job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node-->
+<job-tracker>localhost:7001</job-tracker>
+<name-node>hdfs://localhost:7000</name-node>
+    <configuration>
+                <property>
+                    <name>mapred.queue.name</name>
+                    <value>default</value>
+                </property>
+            </configuration>
+            <main-class>HelloWorld</main-class>
+            <arg>arg1</arg>
+            <arg>arg2</arg>
+        </java>
+        <ok to="end"/>
+        <error to="fail"/>
+    </action>
+    <kill name="fail">
+        <message>Hello World failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
